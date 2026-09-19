@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I have something special for you... 💕</title>
+  <style>
+    :root {
+      --bg-dark: #120008;
+      --card-bg: #1f0512;
+      --accent-pink: #ff2a6d;
+      --light-pink: #ffb3c6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+      overflow-x: hidden;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 2px solid var(--accent-pink);
+      border-radius: 24px;
+      padding: 30px 20px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255, 42, 109, 0.4);
+      position: relative;
+    }
+
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .step.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      font-size: 70px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    p.subtext {
+      color: var(--light-pink);
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+    }
+
+    button {
+      background: var(--accent-pink);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(255, 42, 109, 0.3);
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-no {
+      background: #4a1525;
+      color: var(--light-pink);
+      position: relative;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border: 2px solid var(--accent-pink);
+      border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      max-width: 320px;
+      width: 100%;
+    }
+
+    /* Photo Gallery */
+    .gallery-container {
+      width: 100%;
+      margin: 15px 0;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 2px solid var(--accent-pink);
+      margin-bottom: 10px;
+    }
+
+    /* Letter Box */
+    .letter-box {
+      text-align: left;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--light-pink);
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      margin: 15px 0;
+      border: 1px dashed var(--accent-pink);
+    }
+
+    .letter-box p {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Music Player -->
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="card">
+    
+    <!-- STEP 1: Intro -->
+    <div id="step-1" class="step active">
+      <div class="avatar">🐱</div>
+      <h2>I have something special to tell you...</h2>
+      <p class="subtext">Something that will change everything ✨</p>
+      <button onclick="startProposal()">Tap to Begin ✨</button>
+    </div>
+
+    <!-- STEP 2: Trust Question -->
+    <div id="step-2" class="step">
+      <div class="avatar">😿</div>
+      <h2>Be honest with me...</h2>
+      <p class="subtext">This is important to me 💕</p>
+      <div class="btn-group">
+        <button onclick="nextStep(3)">Yes, I do 💖</button>
+        <button class="btn-no" onmouseover="evade(this)" onclick="evade(this)">No 🥺</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Love Question -->
+    <div id="step-3" class="step">
+      <div class="avatar">😻</div>
+      <h2>One more thing...</h2>
+      <p class="subtext">I need to know this 💖</p>
+      <div class="btn-group">
+        <button onclick="nextStep(4)">Yes, I love you! ❤️</button>
+        <button class="btn-no" onmouseover="evade(this)" onclick="evade(this)">No 🥺</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Proposal Question -->
+    <div id="step-4" class="step">
+      <div class="avatar">🧸</div>
+      <h2>Last question, I promise!</h2>
+      <p class="subtext">This one is the most important 🌟</p>
+      <div class="btn-group">
+        <button onclick="nextStep(5)">Yes, forever! 💍</button>
+        <button class="btn-no" onclick="openModal()">Let me think... 🤔</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Memory Photo Carousel -->
+    <div id="step-5" class="step">
+      <h2>From the first day I met you...</h2>
+      <p class="subtext">Life became brighter 💖</p>
+
+      <div class="gallery-container">
+        <img id="gallery-img" class="gallery-img" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600" alt="Couple Moment">
+      </div>
+
+      <div class="btn-group" style="margin-bottom: 15px;">
+        <button onclick="prevPhoto()" style="padding: 8px 16px;">← Prev</button>
+        <button onclick="nextPhoto()" style="padding: 8px 16px;">Next →</button>
+      </div>
+
+      <button onclick="nextStep(6)">See My Message 💌</button>
+    </div>
+
+    <!-- STEP 6: Reveal Envelope -->
+    <div id="step-6" class="step">
+      <div class="avatar">✉️</div>
+      <h2>This is just for you...</h2>
+      <p class="subtext">Tap below to open your letter</p>
+      <div style="font-size: 60px; cursor: pointer; margin: 20px 0;" onclick="nextStep(7)">🐱🎁</div>
+    </div>
+
+    <!-- STEP 7: Love Letter -->
+    <div id="step-7" class="step">
+      <div class="avatar">🐱🌸</div>
+      <h3 style="color: var(--accent-pink);">Hey Prachi ✨</h3>
+
+      <div class="letter-box">
+        <p>Hey Prachi,I’ve really enjoyed our conversations and the time we’ve spent talking. Over the past while, I’ve realized that my feelings for you have grown into something more than friendship.</p>
+        <p>I truly respect you and our connection, which is why I wanted to be honest: I like you so much. I also want to ask your permission before I take this further. Would you be okay if I approached you romantically and got to know you in that way?</p>
+        <p>Please take your time to think about it and give me an answer whenever you’re comfortable. And if you don’t feel the same, that’s completely okay too—can we at least become good best friends?</p>
+        <p>There’s no pressure at all; I value you and our bond either way. ✨</p>
+      </div>
+
+      <button onclick="nextStep(8)">Yes, I'd Love To! ❤️</button>
+    </div>
+
+    <!-- STEP 8: Celebration Finish -->
+    <div id="step-8" class="step">
+      <div class="avatar">✨💖🎉</div>
+      <h2 style="font-size: 1.8rem; color: var(--accent-pink);">You made me the happiest!</h2>
+      <p class="subtext">Thank you for reading my heart 🥰<br>I promise to value you always...</p>
+      <div style="font-size: 80px; margin: 20px 0;">💗</div>
+      <button onclick="nextStep(1)">Replay All 🔄</button>
+    </div>
+
+  </div>
+
+  <!-- Popup Modal -->
+  <div id="popup-modal" class="modal-overlay">
+    <div class="modal">
+      <div style="font-size: 40px; margin-bottom: 10px;">🐶</div>
+      <h3>Just Say YES! 💕</h3>
+      <p class="subtext" style="margin-top: 10px;">Come on, don't make me wait! You know deep down in your heart that you want to say yes!</p>
+      <button onclick="closeModalAndProceed()">Yes, I'll Say YES! ✨</button>
+    </div>
+  </div>
+
+  <script>
+    const music = document.getElementById('bg-music');
+    const photos = [
+      "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600",
+      "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=600",
+      "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600"
+    ];
+    let currentPhotoIndex = 0;
+
+    function startProposal() {
+      music.play().catch(e => console.log("Audio autoplay prevented"));
+      nextStep(2);
+    }
+
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      document.getElementById(`step-${stepNumber}`).classList.add('active');
+    }
+
+    function prevPhoto() {
+      currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+      document.getElementById('gallery-img').src = photos[currentPhotoIndex];
+    }
+
+    function nextPhoto() {
+      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+      document.getElementById('gallery-img').src = photos[currentPhotoIndex];
+    }
+
+    function evade(button) {
+      const x = Math.floor(Math.random() * 160) - 80;
+      const y = Math.floor(Math.random() * 100) - 50;
+      button.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function openModal() {
+      document.getElementById('popup-modal').style.display = 'flex';
+    }
+
+    function closeModalAndProceed() {
+      document.getElementById('popup-modal').style.display = 'none';
+      nextStep(5);
+    }
+  </script>
+</body>
+</html>
